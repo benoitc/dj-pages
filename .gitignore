@@ -1,0 +1,10 @@
+.DS_Store
+*.pyc
+*.db
+*.swp
+*.pyo
+.installed.cfg
+dj_webmachine.egg-info/
+dist
+build
+
