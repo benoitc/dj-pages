@@ -5,7 +5,7 @@
 
 from datetime import datetime
 
-from couchdbkit.ext.django import Document, DateTimePropery
+from couchdbkit.ext.django.schema import Document, DateTimeProperty
 
 class DocRev(Document):
     """ document with revisions """

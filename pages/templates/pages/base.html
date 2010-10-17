@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}{% endblock %}</title>
+
+    {% load pagesmedia %}
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>
+
+    <link rel="stylesheet" href="css/vader/jquery-ui-1.8.5.custom.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="css/main.css" type="text/css" media="screen, projection" />
+    {% block extrahead %}{% endblock %}
+</head>
+
+<body>
+  
+  {% block content %}{% endblock %}
+
+  <script type="text/javascript" src="js/mustache.js"></script>
+  <script type="text/javascript" src="js/json2.js"></script>
+  <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-1.8.5.custom.min.js"></script>
+
+  {% block extrascripts %}{% endblock %}
+</body>
+
+</html>

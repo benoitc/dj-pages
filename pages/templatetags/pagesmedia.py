@@ -17,7 +17,7 @@ def pages_media_url():
         from django.conf import settings
     except ImportError:
         return ''
-    
+   
     PAGES_MEDIA_URL = getattr(settings, 'PAGES_MEDIA_URL', 
             '/media/pages')
                                                   

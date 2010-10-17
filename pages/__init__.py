@@ -25,4 +25,3 @@ else:
 
 version_info = (0, 1, "0%s" % minor_tag)
 __version__ = ".".join(map(str, version_info))
-
