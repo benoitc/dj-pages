@@ -1,5 +1,5 @@
-pages
------
+dj-pages
+--------
 
 Minimal content renderer. Pages is a Django application that help the 
 creation from diffrent kind of content. 
@@ -37,12 +37,12 @@ Don't forget to install dependencies first : spidermonkey 1.7, icu4c & erlang. O
 	$ apt-get install automake autoconf libtool help2man
 	$ apt-get install build-essential erlang libicu-dev libmozjs-dev libcurl4-openssl-dev
 
-Installation of 
-+++++++++++++++++++++++
+Installation of dj-pages 
+++++++++++++++++++++++++
 
 Install from sources::
 
-  $ git clone git@github.com:benoitc/pages
+  $ git clone git@github.com:benoitc/dj-pages
   $ python setup.py install
 
 Configure your Django Project
@@ -54,6 +54,7 @@ Here we will show what to edit in your settings file. First you need to add
   INSTALLED_APPS = (
       ...
       'couchdbkit.ext.django',
+      'revproxy',
       'pages',
   )
   

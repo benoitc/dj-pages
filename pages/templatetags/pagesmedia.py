@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -
 #
-# This file is part of pages released under the MIT license. 
+# This file is part of dj-pages released under the MIT license. 
 # See the NOTICE for more information.
 
 from django.template import Library

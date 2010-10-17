@@ -3,8 +3,9 @@
 *.db
 *.swp
 *.pyo
+*.swo
 .installed.cfg
-dj_webmachine.egg-info/
+dj_pages.egg-info/
 dist
 build
 

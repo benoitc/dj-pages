@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# This file is part of pages released under the Apache 2 license. 
+# This file is part of dj-pages released under the Apache 2 license. 
 # See the NOTICE for more information.
 
+from distutils.command.install_data import install_data
 import os
 import sys
 
@@ -29,7 +30,7 @@ class install_package_data(install_data):
 cmdclass = {'install_data': install_package_data }
 
 setup(
-    name = 'pages',
+    name = 'dj-pages',
     version = __version__,
     description = 'Minimal Content Renderer.',
     long_description = file(
@@ -41,7 +42,7 @@ setup(
     author = 'Benoit Chesneau',
     author_email = 'benoitc@e-engura.org',
     license = 'BSD',
-    url = 'http://github.com/benoitc/pages',
+    url = 'http://github.com/benoitc/dj-pages',
     classifiers = [
         'License :: OSI Approved :: MIT',
         'Intended Audience :: Developers',
@@ -58,13 +59,14 @@ setup(
     zip_safe = False,
     packages = find_packages(),
     include_package_data = True,
-    datafiles = data_files,
+    data_files = data_files,
     cmdclass=cmdclass,
     
     install_requires = [
         'setuptools',
         'django',
-        'couchdbkit'
+        'couchdbkit',
+        'dj_revproxy'
     ],
     
     test_suite = 'nose.collector',
