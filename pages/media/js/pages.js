@@ -21,75 +21,6 @@
     }
 
 
-    function resolveModule(path, names, parents, current) {
-        parents = parents || [];
-        if (names.length === 0) {
-            if (typeof current != "string") {
-                throw ["error","invalid_require_path",
-                    'Must require a JavaScript string, not: '+(typeof current)];
-            }
-            return [current, parents];
-        }
-        var n = names.shift();
-        if (n == '..') {
-            parents.pop();
-            var pp = parents.pop();
-            if (!pp) {
-                throw ["error", "invalid_require_path", path];
-            }
-            return resolveModule(path, names, parents, pp);
-        } else if (n == '.') {
-            var p = parents.pop();
-            if (!p) {
-                throw ["error", "invalid_require_path", path];
-            }
-            return resolveModule(path, names, parents, p);
-        } else {
-            parents = [];
-        }
-        if (!current[n]) {
-            throw ["error", "invalid_require_path", path];
-        }
-        parents.push(current);
-        return resolveModule(path, names, parents, current[n]);
-    }
-
-    function makeRequire(ddoc) {
-        var moduleCache = [];
-        function getCachedModule(name, parents) {
-            var key, i, len = moduleCache.length;
-            for (i=0;i<len;++i) {
-                key = moduleCache[i].key;
-                if (key[0] === name && key[1] === parents) {
-                    return moduleCache[i].module;
-                }
-            }
-            return null;
-        }
-        function setCachedModule(name, parents, module) {
-            moduleCache.push({ key: [name, parents], module: module });
-        }
-        var require = function (name, parents) {
-            var cachedModule = getCachedModule(name, parents);
-            if (cachedModule !== null) {
-                return cachedModule;
-            }
-            var exports = {};
-            var resolved = resolveModule(name, name.split('/'), parents, ddoc);
-            var source = resolved[0]; 
-            parents = resolved[1];
-            var s = "var func = function (exports, require) { " + source + " };";
-            try {
-                eval(s);
-                func.apply(ddoc, [exports, function(name) {return require(name, parents)}]);
-            } catch(e) { 
-                throw ["error","compilation_error","Module require('"+name+"') raised error "+e.toSource()]; 
-            }
-            setCachedModule(name, parents, exports);
-            return exports;
-        }
-        return require;
-    };
     $.pages.app = $.pages.app || function(appFun, opts) {
         opts = opts || {};
         var urlPrefix = opts.urlPrefix || "/_pages",
@@ -109,7 +40,6 @@
         function handleDDoc(ddoc) {        
             if (ddoc) {
                 appExports.ddoc = ddoc;
-                appExports.require = makeRequire(ddoc);
             }
             appFun.apply(appExports, [appExports]);
         }
