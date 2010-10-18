@@ -3,5 +3,48 @@
 {% block title%}Admin Index{% endblock %}
 
 {% block content %}
-hello
+<h1>dj-pages admin</h1>
+<div id="pages">
+    <div class="pane ui-layout-center">Center</div>
+
+
+    <div class="pane ui-layout-west">
+        <a id="new-type" href="#">New type</a>
+        <ul id="types">
+        </ul>
+
+        <div class="footer">footer</div>
+    
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript"
+    src="js/jquery.layout-latest.js"></script>
+
+<script>
+    $(document).ready(function () {
+        //$("#pages").layout();
+        var pageLayout = $('#pages').layout({
+            defaults: {},
+            north: {
+                size: "auto",
+                spacing_open: 0,
+                closable: false,
+                resizable: false
+            },
+            west: {
+                width: "200px"
+            }
+        });
+        $("#new-type").button({
+            icons: {
+                secondary: "ui-icon-circle-triangle-s"
+            }
+        });
+    });
+</script>
 {% endblock %}

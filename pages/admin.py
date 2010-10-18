@@ -32,7 +32,6 @@ class PagesAdmin(object):
         return render_to_response("pages/index.html", 
                 context_instance=RequestContext(request))
 
-
     def get_urls(self):
         from django.conf import settings
         from django.conf.urls.defaults import patterns, url, include
@@ -46,8 +45,7 @@ class PagesAdmin(object):
 
         if settings.DEBUG:
             media_path = os.path.abspath(os.path.join(__file__, "..",
-            "media"))
-            print media_path
+                "media"))
             urlpatterns += patterns('',
                 url(r'^(?P<path>.*)', static.serve, {
                     'document_root': media_path,
