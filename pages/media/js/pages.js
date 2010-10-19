@@ -7,8 +7,6 @@
 
     $.pages = $.pages || {};
 
-
-
     function Design(db, name) {
         this.doc_id = "_design/"+name;
         this.code_path = this.doc_id;
@@ -61,13 +59,13 @@
                 db.getDbProperty(design.code_path, {
                     success : function(doc) {
                       $.pages.app.ddocs[design.doc_id] = doc;
-                      $.pages.app.ddoc_handlers[design.doc_id].forEach(function(h) {
+                      _.each($.pages.app.ddoc_handlers[design.doc_id], function(h) {
                           $(function() {h(doc)});
                       });
                       $.pages.app.ddoc_handlers[design.doc_id] = null;
                     },
                     error : function() {
-                        $.pages.app.ddoc_handlers[design.doc_id].forEach(function(h) {
+                        _.each($.pages.app.ddoc_handlers[design.doc_id], function(h) {
                             $(function() {h()});
                         });
                         $.pages.app.ddoc_handlers[design.doc_id] = null;
@@ -77,8 +75,10 @@
         }
     };
     
+    
     $.pages.app.ddocs = {};
     $.pages.app.ddoc_handlers = {};
+
 })(jQuery);
 
 

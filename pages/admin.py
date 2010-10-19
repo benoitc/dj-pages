@@ -32,12 +32,18 @@ class PagesAdmin(object):
         return render_to_response("pages/index.html", 
                 context_instance=RequestContext(request))
 
+    def type(self, request, id=None):
+        return render_to_response("pages/create.html", {
+            "relpath": "../"
+            }, context_instance=RequestContext(request))
+
     def get_urls(self):
         from django.conf import settings
         from django.conf.urls.defaults import patterns, url, include
         db = self.get_db()
         urlpatterns = patterns('',
             url(r"^$", self.index, name="padm_index"),
+            url(r"^newType/$", self.type, name="padm_create_type"),
             url(r"^db(?P<path>.*)", proxy_request, {
                 "destination": db.uri
             }, name="padm_db_proxy"),
