@@ -1,9 +1,8 @@
 from django.conf.urls.defaults import *
 from pages.admin import pages_admin
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from django.contrib import admin
+admin.autodiscover()
 
 
 
@@ -15,6 +14,8 @@ urlpatterns = patterns('',
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+
+     (r'^admin/', include(admin.site.urls)),
     (r"_pages/", include(pages_admin.urls))
 )
