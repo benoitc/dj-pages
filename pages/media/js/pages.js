@@ -32,7 +32,7 @@
 
         
         function bind(u, o) {
-            resources[u] = [u, o];
+            resources.push([u, o]);
         }
 
        function listen() {
@@ -95,19 +95,16 @@
             if (!resources) 
                 return;
 
-            for (r in resources) {
-                m = resources[r];
+            _.each(resources, function(m) {
                 if (req.path.match(m[0])) {
                     res = m[1];
                     if (_.isFunction(res)) {
-                        resFun = res;
+                        return res(appExports, req); 
                     } else {
-                        resFun = res.request;
+                        return res.request(appExports, req);
                     }
-
-                    return resFun.apply(appExports, [appExports, req]);
                 }
-            }
+            });
         }
 
         function parseParamPair(params, key, value) {
@@ -187,9 +184,17 @@
         $(window).bind( "hashchange", function(e) {
             // Url changed
             var url = $.param.fragment();
-            if (url === "") 
-                url = "/";
 
+            if (url === "") { 
+                var current = document.location.href;
+                if (_(current).endsWith("/")) {
+                    current +="#/";
+                } else {
+                    current += "/#/";
+                }
+                document.location=current;
+                return;
+            }
             var req = makeRequest("get", url);
             dispatch(req);
         });

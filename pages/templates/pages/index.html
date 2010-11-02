@@ -3,12 +3,7 @@
 {% block title%}Admin Index{% endblock %}
 
 {% block content %}
-<h1>dj-pages admin</h1>
-<a href="#/test">test</a>
 
-<form id="blah" action="#/test">
-    <input type="submit">
-</form>
 
 {% endblock %}
 
@@ -16,21 +11,24 @@
 <script type="text/javascript"
     src="js/jquery.couch.js"></script>
 <script type="text/javascript"
+    src="js/pages.type.js"></script>
+<script type="text/javascript"
     src="js/pages.js"></script>
+
 <script>
     $(document).ready(function() {
         $.pages.app(function(app) {
             app.bind(/^$/, function(app) {
-                alert("yo");
+                
+                var templates = app.ddoc.templates;
+                var cnt = Mustache.to_html(templates.index, {});
+                $("#content").html(cnt);
+                $("#tabs").tabs();
+
+                $("#toolbar a").button();
             });
 
-            app.bind(/^test/, function(app, req) {
-                alert(req.method);
-                if (req.method === "post") {
-                    alert("posted");
-                    return false;
-                }
-            });
+            app.bind(/^newType/, $.pages.ResourceType);
 
             app.listen();
         });
