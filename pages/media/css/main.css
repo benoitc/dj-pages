@@ -2,8 +2,13 @@ table#properties {
     width: 600px;
     border 1px solid #000;
 }
+
 #property-detail label {
     width: 100%;
     display: block;
     float: left;
+}
+
+tr.property td:hover {
+   background: #666; 
 }
