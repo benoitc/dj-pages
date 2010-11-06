@@ -8,10 +8,7 @@
     $.pages = $.pages || {};
 
     function ResourceType() {
-        this.nb_props = 0;
         this.cache = {};
-        this.inc = 0;
-        this.properties = [];
     }
 
     $.extend(ResourceType.prototype, {
@@ -94,10 +91,8 @@
                     
                     console.log("down");
                 } else {
-                    $(el).parent().remove();
-                    
-                    self.properties.splice(row - 1, 1);
-                    if (self.properties.length > 0) {
+                    $(el).parent().remove(); 
+                    if ($(".property").length > 0) {
                         row_edit = row -1;
                         if (row_edit < 1) {
                             row_edit = 1;
@@ -112,27 +107,27 @@
         },
         
         property_add: function() {
-            
             var templates = this.app.ddoc.templates,
                 properties = $("#properties"), 
                 detail = Mustache.to_html(templates.property_row, {
                     rowspan: this.nb_props,
                     name: "New propety"            
-                });
+                }),
+                nb_rows = $("#properties").attr('rows').length;
             
             $(".current").removeClass("current");
             var row = $('<tr></tr>');
             $('<td class="property current">New property</td>').appendTo(row);
-            if (this.properties.length === 0) {
+            if (nb_rows === 1) {
                 pdetail = $('<td id="property-detail"></td>');
                 pdetail.appendTo(row);
             } else {
                 pdetail= $("#property-detail");
             }
-            pdetail.attr("rowspan", this.properties.length);
+            pdetail.attr("rowspan", nb_rows-1);
             pdetail.html(detail);
             row.appendTo(properties);
-            this.properties.push({});
+            $.data(row[0], "property", {});
 
             $("#pname").bind("keyup", function(e) {
                 var el = $("td:first", row[0]);
@@ -141,11 +136,11 @@
         },
 
         property_edit: function(row) {
-            var prop = this.properties[row -1],
-                tr = $("#properties tr")[row],
+            var tr = $("#properties tr")[row],
+                prop = $.data(tr, "property");
                 templates = this.app.ddoc.templates;
            
-            console.log(row); 
+            console.log(prop);
             var detail = Mustache.to_html(templates.property_row, prop);
             if ($("#property-detail").length > 0) {
                 td = $("#property_detail");

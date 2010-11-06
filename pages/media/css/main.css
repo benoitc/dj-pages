@@ -2,7 +2,6 @@
 
 table#properties {
     width: 600px;
-    border 1px solid #000;
     border-spacing: 0.3em;
 }
 
@@ -21,8 +20,9 @@ td.property {
 
 td.property:hover,
 td.current {
-    background: #aaa;
-    max-height: 1em; 
+    background: #eee;
+    max-height: 1em;
+   border-bottom: 1px solid #000; 
 }
 
 td.property div.ttool {
