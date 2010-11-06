@@ -33,3 +33,7 @@ td.property div.ttool {
     top: 0;
 }
 
+td.current {
+    font-weight: bold;
+}
+

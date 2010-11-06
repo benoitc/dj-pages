@@ -106,11 +106,14 @@
             });
             $("button", toolbar).click(function(e) {
                 e.preventDefault();
+                var r = $(this).closest("tr"); 
                 if ($(this).hasClass("up")) {
-                    if (row === 0) return;
+                    if (row === 1) return;
+                    $(r).insertBefore($(r).prev());
                     console.log("up");
                 } else if ($(this).hasClass("down")) {
-                    if (row === (self.properties.length -1)) return; 
+                    if (row === ($("#properties").length-1)) return;
+                    $(r).insertAfter($(r).next()); 
                     console.log("down");
                 } else {
                     var next = $(el).parent().next();
@@ -148,7 +151,6 @@
             row.appendTo(properties);
 
             properties.trigger("update", [row]); 
-
         },
 
         property_edit: function(row) {
