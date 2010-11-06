@@ -58,6 +58,8 @@
                 .live("keyup", function(e) {
                     var row = $(".current").parent();
                     $("#properties").trigger("update", [row]);
+                    if (this.id == "name")
+                        $(".current").html($(this).val()); 
                 });
 
             $("#properties").bind("update", function(e, row) {
@@ -147,10 +149,6 @@
 
             properties.trigger("update", [row]); 
 
-            $("#name").bind("keyup", function(e) {
-                var el = $("td:first", row[0]);
-                el.html($(this).val());
-            });
         },
 
         property_edit: function(row) {
