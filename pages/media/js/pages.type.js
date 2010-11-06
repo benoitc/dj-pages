@@ -53,12 +53,16 @@
             $("#property-detail :input")
                 .live("change", function(e) {
                     var row = $(".current").parent();
+                    if (this.id === "type") {
+                        var proptype = $(this).val();
+                        self.display_type(proptype);
+                    }
                     $("#properties").trigger("update", [row]);
                 })
                 .live("keyup", function(e) {
                     var row = $(".current").parent();
                     $("#properties").trigger("update", [row]);
-                    if (this.id == "name")
+                    if (this.id === "name")
                         $(".current").html($(this).val()); 
                 });
 
@@ -70,9 +74,6 @@
                 });
                 $.data(row[0], "_property", prop); 
             });
-
-
-
         },
 
         type_toolbar: function(el) {
@@ -149,6 +150,7 @@
             pdetail.attr("rowspan", nb_rows-1);
             pdetail.html(detail);
             row.appendTo(properties);
+            this.display_type("text");
 
             properties.trigger("update", [row]); 
         },
@@ -169,10 +171,30 @@
                     $(this).val(prop[this.id]);
                 }
             });
+            this.display_type(prop.type);
+            $(".dtype :input").each(function() {
+                var val = prop[this.id]
+                if (typeof(val) != "undefined")
+                    $(this).val(val);
+            });
+
             $(".current").removeClass("current");
             $("td:first", row).addClass("current");
-        }
+        },
 
+        display_type: function(type) {
+            var templates = this.app.ddoc.templates,
+                pdetail = $("#property-detail");
+            $(".dtype").remove();
+            tplname = "prop_" + type;
+            if (typeof(templates[tplname]) != "undefined") {
+                var div = $('<div class="dtype"></div>'),
+                    tpl = Mustache.to_html(templates[tplname], {});
+                div
+                    .html(tpl)
+                    .appendTo(pdetail);
+            }
+        }
     });
 
     $.pages.ResourceType = new ResourceType();
