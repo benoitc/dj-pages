@@ -1,6 +1,9 @@
+
+
 table#properties {
     width: 600px;
     border 1px solid #000;
+    border-spacing: 0.3em;
 }
 
 #property-detail label {
@@ -9,6 +12,24 @@ table#properties {
     float: left;
 }
 
-tr.property td:hover {
-   background: #666; 
+
+td.property {
+    width: 50%;
+    border-spacing: 0.3EM;
+    height: 14px;
 }
+
+td.property:hover,
+td.current {
+    background: #aaa;
+    max-height: 1em; 
+}
+
+td.property div.ttool {
+    display: block;
+    position: relative;
+    float:right;
+    right:0;
+    top: 0;
+}
+
