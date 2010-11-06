@@ -33,11 +33,8 @@
             });
 
             $(".property").live("mouseover", function(e) {
-                 
-
-                var row = $("td.current").parent().parent().children().index($(this));
+                // display toolbar to manage up, down acttions
                 self.type_toolbar(this); 
-                 
             }).live("mouseleave", function() {
                 $(".ttool", this).remove();
             });
@@ -48,7 +45,31 @@
 
                 $("td.current").removeClass("current");
                 $(this).addClass("current");
+                var row = $(this).parent();
+                console.log("edit");
+                self.property_edit(row);
             });
+
+            $("#property-detail :input")
+                .live("change", function(e) {
+                    var row = $(".current").parent();
+                    $("#properties").trigger("update", [row]);
+                })
+                .live("keyup", function(e) {
+                    var row = $(".current").parent();
+                    $("#properties").trigger("update", [row]);
+                });
+
+            $("#properties").bind("update", function(e, row) {
+                console.log("update property");
+                var prop = {};
+                $("#property-detail :input").each(function(el) {
+                    prop[$(this).attr("id")] = $(this).val();
+                });
+                $.data(row[0], "_property", prop); 
+            });
+
+
 
         },
 
@@ -88,16 +109,12 @@
                     console.log("up");
                 } else if ($(this).hasClass("down")) {
                     if (row === (self.properties.length -1)) return; 
-                    
                     console.log("down");
                 } else {
+                    var next = $(el).parent().next();
                     $(el).parent().remove(); 
-                    if ($(".property").length > 0) {
-                        row_edit = row -1;
-                        if (row_edit < 1) {
-                            row_edit = 1;
-                        }
-                        self.property_edit(row_edit);
+                    if (next.length > 0) {
+                        self.property_edit(next);
                     }
                     console.log("close");
                 }
@@ -127,30 +144,33 @@
             pdetail.attr("rowspan", nb_rows-1);
             pdetail.html(detail);
             row.appendTo(properties);
-            $.data(row[0], "property", {});
 
-            $("#pname").bind("keyup", function(e) {
+            properties.trigger("update", [row]); 
+
+            $("#name").bind("keyup", function(e) {
                 var el = $("td:first", row[0]);
                 el.html($(this).val());
             });
         },
 
         property_edit: function(row) {
-            var tr = $("#properties tr")[row],
-                prop = $.data(tr, "property");
+            var prop = $.data(row[0], "_property");
                 templates = this.app.ddoc.templates;
-           
-            console.log(prop);
             var detail = Mustache.to_html(templates.property_row, prop);
             if ($("#property-detail").length > 0) {
-                td = $("#property_detail");
+                td = $("#property-detail");
             } else {
                 td = $('<td id="property-detail"></td>');
-                td.appendTo(tr);
+                td.appendTo(row);
             }
             td.html(detail);
+            $("#property-detail select").each(function() {
+                if (typeof(prop[this.id]) != "undefined") {
+                    $(this).val(prop[this.id]);
+                }
+            });
             $(".current").removeClass("current");
-            $("td:first", tr).addClass("current");
+            $("td:first", row).addClass("current");
         }
 
     });
