@@ -1,5 +1,5 @@
 {% extends "pages/base_site.html" %}
-
+{% load pagesmedia %}
 {% block title%}Admin Index{% endblock %}
 
 {% block content %}
@@ -8,6 +8,12 @@
 {% endblock %}
 
 {% block extrascripts %}
+<script>
+    var _MEDIA_URL = "{% pages_media_url %}";
+  </script>
+
+<script type="text/javascript"
+    src="codemirror/js/codemirror.js"></script>
 <script type="text/javascript"
     src="js/jquery.couch.js"></script>
 <script type="text/javascript"

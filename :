@@ -2,28 +2,18 @@ html, body {
     height: 100%;
 }
 
-div.properties-w {
-    width: 100%;
-    overflow: auto;
-    height: 350px;%;
-}
-
 div.wproperties {
     width: 49%;
-
 }
 
 div.wproperties-details {
     width: 49%;
     float: right;
-    position: relative;
-    top: 0;
 }
 
 table#properties {
     width: 100%;
     border-spacing: 0.3em;
-    z-index: 0;
 }
 
 #property-detail {
@@ -55,7 +45,7 @@ td.current {
 }
 
 td.property:hover {
-    background: #F4F4F4;
+    background: #aaa;
 }
 
 td.property div.ttool {
@@ -70,11 +60,11 @@ td.current {
     font-weight: bold;
 }
 
-
-
-#tpl {
+#tabs {
     height: 400px;
 }
+
+
 
 .editbox {
     font-family:monospace;
@@ -94,27 +84,6 @@ td.current {
     color:#888;
     padding:0;
     text-align:right;    
-}
-
-div.template-toolbar {
-    width: 100%;
-    height: 30px;
-    background: #F4F4F4;
-    border-bottom: 1px solid #000;
-    padding: 4px;
-}
-
-.template-toolbar span.tool-r {
-    margin-left: 100px;
-}
-
-.template-toolbar select {
-    margin-top: -4px;
-    height: 24px;
-}
-button {
-    height: 24px; 
-    font-size: 16px;
 }
 
 

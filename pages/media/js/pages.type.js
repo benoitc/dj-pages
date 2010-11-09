@@ -8,10 +8,43 @@
     $.pages = $.pages || {};
 
     function ResourceType() {
-        this.cache = {};
+        this.templates = {
+            "show": "",
+            "list": ""
+        };
     }
 
     $.extend(ResourceType.prototype, {
+
+        editorOptions: {
+            path: "codemirror/js/",
+            indentUnit: 4,
+            tabMode: "spaces",
+            undoDepth: 50,
+            undoDelay: 600,
+            textWrapping: false, // break line numbers
+            lineNumbers: true,
+            autoMatchParens: true,
+            disableSpellcheck: true,
+            height: "dynamic",
+            parserfile: [
+                "parsedummy.js",
+                "parsexml.js",
+                "parsecss.js", 
+                "tokenizejavascript.js", 
+                "parsejavascript.js", 
+                "parsehtmlmixed.js",
+
+            ],
+            stylesheet: [
+                "codemirror/css/xmlcolors.css", 
+                "codemirror/css/csscolors.css", 
+                "codemirror/css/jscolors.css", 
+
+            ]
+        },
+
+
         request: function(app, req) {
             this.app = app;
             if (req.method === "get") {
@@ -20,12 +53,23 @@
         },
 
         new_type: function(app, req) {
-            var self = this;
-            var templates = app.ddoc.templates;
-            var cnt = Mustache.to_html(templates.type, {});
+            var self = this,
+                templates = app.ddoc.templates,
+                cnt = Mustache.to_html(templates.type, {});
+
+            this.current_tab = "form";
+
+            this.templateEditor = null;
+
             $("#content").html(cnt);
             $("#admin").html(Mustache.to_html(templates.type_admin, {})); 
-            $("#tabs").tabs()
+            $("#tabs").tabs({
+                select: function(e, ui) {
+                    if ((ui.panel.id === "templates") && (this.tab != "templates")) {
+                        self.display_editor();
+                    }
+                }   
+            })
            
             $("#new-property").button().click(function() {
                 self.property_add();
@@ -135,7 +179,7 @@
                 properties = $("#properties"), 
                 detail = Mustache.to_html(templates.property_row, {
                     rowspan: this.nb_props,
-                    name: "New propety"            
+                    name: "New property"            
                 }),
                 pdetail = $("#property-detail");
             
@@ -184,7 +228,62 @@
                     .html(tpl)
                     .appendTo(pdetail);
             }
-        }
+        },
+
+        display_editor: function() {
+            var templates = this.app.ddoc.templates,
+                cnt = Mustache.to_html(templates.type_templates_editor, {}),
+                $tpl = $("#templates"), 
+                self = this;
+
+            $tpl.html(cnt);
+                
+            var editor = CodeMirror.fromTextArea("tpl", this.editorOptions);
+
+            // init toolbar
+            $(".template-toolbar select:first").bind("change", function() {
+                var t = $(this).val(),
+                    updated = (t === "show") ? "list": "show";
+                console.log(t);
+
+                self.templates[updated] = editor.getCode();
+                editor.setCode(self.templates[t]);
+            });
+
+            $(".template-toolbar button:first").button({
+                text: false,
+                icons: {
+                    primary: "ui-icon-tag"
+                }
+            });
+            
+            $("#bprop").click(function() {
+                var properties = [];
+                $("#properties tr").each(function() {
+                    properties.push($(this).data("_property"));
+                });
+                
+                var dialogTpl = $(Mustache.to_html(templates.template_propdlg, {
+                        properties: properties
+                }));
+                $("#templates").append(dialogTpl);
+
+                $("#tplDlg").dialog({
+                    title: "Insert a property",
+                    buttons: {
+                        "Insert in template": function() {
+                            var name = $("#tplDlg select").val();
+                            editor.replaceSelection('{{doc["'+name+'"]}}');         
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+                return false;                     
+            });
+
+                
+        } 
+            
     });
 
     $.pages.ResourceType = new ResourceType();
