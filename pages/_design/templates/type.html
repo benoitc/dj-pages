@@ -1,4 +1,5 @@
 <form id="ftype">
+    <p><label>Name:&nbsp;</label><input type="text" id="type_name" value="{{ type_name }}"></p>
     <div id="tabs">
         <ul>
             <li><a href="#form">Formulairs</a></li>
@@ -11,17 +12,18 @@
                 <button id="new-property">New property</button>
             </div>
             <h2>Add Properties</h2>
-            <table id="properties">
-                <tr>
-                    <th>Properties</th>
-                    <th>Properties Details</th>
-                </tr>
-                
-
-            </table>
+            <div class="wproperties-details">
+                <h3>Properties Details</h3>
+                <div id="property-detail"></div>
+            </div>
+            <div class="wproperties">
+                <h3>Properties</h3>
+                <table id="properties"></table>
+            </div>
         </div>
         <div id="templates">templates</div>
         <div id="admin">Problem while loading admin. Please refresh the page</div>
 
     </div>
+    <p><input type="submit" value="Save type"></p>
 </form>

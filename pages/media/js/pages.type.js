@@ -110,18 +110,12 @@
                 var r = $(this).closest("tr"),
                     $r = $(r); 
                 if ($(this).hasClass("up")) {
-                    if (row === 1) return;
+                    if (row === 0) return;
                     $r.insertBefore($r.prev());
-                    if (row == 2) {
-                        $("#property-detail").appendTo($r);
-                    }
                     console.log("up");
                 } else if ($(this).hasClass("down")) {
                     if (row === ($("#properties").length-1)) return;
                     $r.insertAfter($(r).next());
-                    if (row == 1) {
-                        $("#property-detail").appendTo($r.prev());
-                    }
                     console.log("down");
                 } else {
                     var next = $(el).parent().next();
@@ -143,20 +137,13 @@
                     rowspan: this.nb_props,
                     name: "New propety"            
                 }),
-                nb_rows = $("#properties").attr('rows').length;
+                pdetail = $("#property-detail");
             
             $(".current").removeClass("current");
             var row = $('<tr></tr>');
-            $('<td class="property current">New property</td>').appendTo(row);
-            if (nb_rows === 1) {
-                pdetail = $('<td id="property-detail"></td>');
-                pdetail.appendTo(row);
-            } else {
-                pdetail= $("#property-detail");
-            }
-            pdetail.attr("rowspan", nb_rows-1);
+            $('<td class="property current">New property</td>').appendTo(row); 
             pdetail.html(detail);
-            row.appendTo(properties);
+            properties.append(row);
             this.display_type("text");
 
             properties.trigger("update", [row]); 
@@ -164,15 +151,11 @@
 
         property_edit: function(row) {
             var prop = $.data(row[0], "_property");
-                templates = this.app.ddoc.templates;
-            var detail = Mustache.to_html(templates.property_row, prop);
-            if ($("#property-detail").length > 0) {
-                td = $("#property-detail");
-            } else {
-                td = $('<td id="property-detail"></td>');
-                td.appendTo(row);
-            }
-            td.html(detail);
+                templates = this.app.ddoc.templates,
+                detail = Mustache.to_html(templates.property_row, prop),
+                pdetail = $("#property-detail");
+
+            pdetail.html(detail);
             $("#property-detail select").each(function() {
                 if (typeof(prop[this.id]) != "undefined") {
                     $(this).val(prop[this.id]);

@@ -1,28 +1,51 @@
+html, body {
+    height: 100%;
+}
 
+div.wproperties {
+    width: 49%;
+}
+
+div.wproperties-details {
+    width: 49%;
+    float: right;
+}
 
 table#properties {
-    width: 600px;
+    width: 100%;
     border-spacing: 0.3em;
 }
 
+#property-detail {
+    font-size: 12px;
+}
 #property-detail label {
     width: 100%;
     display: block;
     float: left;
+    font-size: 12px;
+
+}
+
+#properties tr {
+    height: 16px;;
 }
 
 
 td.property {
     width: 50%;
     border-spacing: 0.3EM;
-    height: 14px;
+    font-size: 12px;
 }
 
 td.property:hover,
 td.current {
     background: #eee;
-    max-height: 1em;
-   border-bottom: 1px solid #000; 
+    border-bottom: 1px solid #000; 
+}
+
+td.property:hover {
+    background: #aaa;
 }
 
 td.property div.ttool {
@@ -37,3 +60,6 @@ td.current {
     font-weight: bold;
 }
 
+#tabs {
+    height: 400px;
+}
