@@ -40,7 +40,7 @@
             });
 
             $(".property").live("click", function(e) {
-                if (e.originalTarget.nodeName === "BUTTON")
+                if (typeof(e.originalTarget) != "undefined" && e.originalTarget.nodeName === "BUTTON")
                     return;
 
                 $("td.current").removeClass("current");
@@ -107,14 +107,21 @@
             });
             $("button", toolbar).click(function(e) {
                 e.preventDefault();
-                var r = $(this).closest("tr"); 
+                var r = $(this).closest("tr"),
+                    $r = $(r); 
                 if ($(this).hasClass("up")) {
                     if (row === 1) return;
-                    $(r).insertBefore($(r).prev());
+                    $r.insertBefore($r.prev());
+                    if (row == 2) {
+                        $("#property-detail").appendTo($r);
+                    }
                     console.log("up");
                 } else if ($(this).hasClass("down")) {
                     if (row === ($("#properties").length-1)) return;
-                    $(r).insertAfter($(r).next()); 
+                    $r.insertAfter($(r).next());
+                    if (row == 1) {
+                        $("#property-detail").appendTo($r.prev());
+                    }
                     console.log("down");
                 } else {
                     var next = $(el).parent().next();
