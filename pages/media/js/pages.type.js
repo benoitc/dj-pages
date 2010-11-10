@@ -9,8 +9,8 @@
 
     function ResourceType() {
         this.templates = {
-            "show": "",
-            "list": ""
+            "show": ["", "", ""],
+            "list": ["", "", ""]
         };
     }
 
@@ -68,7 +68,8 @@
                     if ((ui.panel.id === "templates") && (this.tab != "templates")) {
                         self.display_editor();
                     }
-                }   
+                },
+                height: "100%" 
             })
            
             $("#new-property").button().click(function() {
@@ -237,26 +238,44 @@
                 self = this;
 
             $tpl.html(cnt);
-                
-            var editor = CodeMirror.fromTextArea("tpl", this.editorOptions);
+
+            var eHtml = CodeMirror.fromTextArea("thtml", this.editorOptions),
+                eCss = CodeMirror.fromTextArea("tcss", this.editorOptions),
+                eJS =  CodeMirror.fromTextArea("tjs", this.editorOptions);
+
+            eCss.setParser("CSSParser");
+            eJS.setParser("JSParser");
 
             // init toolbar
             $(".template-toolbar select:first").bind("change", function() {
                 var t = $(this).val(),
                     updated = (t === "show") ? "list": "show";
-                console.log(t);
 
-                self.templates[updated] = editor.getCode();
-                editor.setCode(self.templates[t]);
+                self.templates[updated] = [eHtml.getCode(), eCss.getCode(), eJS.getCode()];
+                eHtml.setCode(self.templates[t][0]);
+                eCss.setCode(self.templates[t][1]);
+                eJS.setCode(self.templates[t][2]);
             });
 
-            $(".template-toolbar button:first").button({
+            $(".tool button:first").button({
                 text: false,
                 icons: {
                     primary: "ui-icon-tag"
                 }
+            }).next().button({
+                text: false,
+                icons: {
+                    primary: "ui-icon-newwin"
+                }
             });
-            
+           
+            $(".common button").button({
+                text: false,
+                icons: {
+                    primary: "ui-icon-newwin"
+                }
+            });
+
             $("#bprop").click(function() {
                 var properties = [];
                 $("#properties tr").each(function() {
@@ -281,9 +300,62 @@
                 return false;                     
             });
 
+            $(".win").click(function() {
+                var txt = $(this)
+                    .parent()
+                    .parent()
+                    .find(".CodeMirror-wrapping");
+
+                if (!$(this).hasClass("expand")) {
+                    txt.addClass("hidden");
+                    $(this).addClass("expand");
+                } else {
+                    txt.removeClass("hidden");
+                    $(this).removeClass("expand");
+                }
+                return false; 
+            }); 
+
+
+            var $body = $("#preview-content").contents()[0],
+                $head = $("#preview-content").contents().find("head");
+
+
+            function refresh() {
+
                 
-        } 
+                //head += '<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>'
+                //+'<script type="text/javascript" src="js/jquery-ui-1.8.6.custom.min.js"></script>';
+                
+                                body = eHtml.getCode();
+                body += '<script type="text/javascript">' + eJS.getCode() + "</script>";
+                $body.open();
+                
+                
+                $body.write(body);
+                $body.close();
+                $("head", $body).html('<style>'+ eCss.getCode()+ '</style>'); 
+
+                
+
+                
+            }
+
             
+            $(eHtml.win).bind("keyup", function() {
+               refresh(); 
+                
+            });
+
+            $(eCss.win).bind("keyup", function() {
+                refresh();
+            });
+            $(eJS.win).bind("keyup", function() {
+                refresh();
+            });
+             
+        }
+
     });
 
     $.pages.ResourceType = new ResourceType();

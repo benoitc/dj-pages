@@ -1,13 +1,46 @@
-<div class="template-toolbar">
-    <button id="bprop">property</button>
-    <span class="tool-r"><label>Edit template: </label><select>
-        <option value="show">show</option>
-        <option value="list">list</option>
-    </select></span>
+<div>
+    <div class="template-toolbar">
+        
+        <span class="tool-r"><label>Edit template: </label><select>
+            <option value="show">show</option>
+            <option value="list">list</option>
+        </select></span>
+    </div>
+
+    <div class="wrapper">
+        
+
+        <div class="wrapper-edit">
+            <div class="t-html">
+                <div class="tool">
+                    <button id="bprop">property</button>
+                    <button class="win">newin</button>
+                </div>
+                <h4>HTML </h4>
+                <textarea id="thtml"></textarea>
+            </div>
+
+            <div class="t-css">
+                <div class="tool common">
+                    <button class="win">newin</button>
+                </div>
+                <h4>CSS</h4>
+                <textarea id="tcss"></textarea>
+            </div>
+
+            
+            <div class="t-js">
+                <div class="tool common">
+                    <button class="win">newin</button>
+                </div>
+                <h4>JS</h4>
+                <textarea id="tjs"></textarea>
+            </div>
+        </div>
+
+        <div class="wrapper-preview">
+            <iframe id="preview-content"></iframe>
+        </div> 
+
+    </div>
 </div>
-
-<div class="wtpl">
-    <textarea id="tpl"></textarea>
-</div>
-
-
