@@ -246,17 +246,12 @@
             eCss.setParser("CSSParser");
             eJS.setParser("JSParser");
 
+            eHtml.setCode(self.templates["show"][0]);
+            eCss.setCode(self.templates["show"][1]);
+            eJS.setCode(self.templates["show"][2]);
+
             // init toolbar
-            $(".template-toolbar select:first").bind("change", function() {
-                var t = $(this).val(),
-                    updated = (t === "show") ? "list": "show";
-
-                self.templates[updated] = [eHtml.getCode(), eCss.getCode(), eJS.getCode()];
-                eHtml.setCode(self.templates[t][0]);
-                eCss.setCode(self.templates[t][1]);
-                eJS.setCode(self.templates[t][2]);
-            });
-
+            
             $(".tool button:first").button({
                 text: false,
                 icons: {
@@ -292,7 +287,7 @@
                     buttons: {
                         "Insert in template": function() {
                             var name = $("#tplDlg select").val();
-                            editor.replaceSelection('{{doc["'+name+'"]}}');         
+                            eHtml.replaceSelection('{{doc["'+name+'"]}}');         
                             $(this).dialog("close");
                         }
                     }
@@ -322,19 +317,19 @@
 
 
             function refresh() {
-
                 
-                //head += '<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>'
-                //+'<script type="text/javascript" src="js/jquery-ui-1.8.6.custom.min.js"></script>';
+                head = '<style>'+ eCss.getCode()+ '</style>';
+                head += '<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>'
+                +'<script type="text/javascript" src="js/jquery-ui-1.8.6.custom.min.js"></script>';
                 
-                                body = eHtml.getCode();
+                body = eHtml.getCode();
                 body += '<script type="text/javascript">' + eJS.getCode() + "</script>";
                 $body.open();
                 
                 
                 $body.write(body);
                 $body.close();
-                $("head", $body).html('<style>'+ eCss.getCode()+ '</style>'); 
+                $("head", $body).html(head); 
 
                 
 
@@ -353,7 +348,18 @@
             $(eJS.win).bind("keyup", function() {
                 refresh();
             });
-             
+            
+            $(".template-toolbar select:first").bind("change", function() {
+                var t = $(this).val(),
+                    updated = (t === "show") ? "list": "show";
+
+                self.templates[updated] = [eHtml.getCode(), eCss.getCode(), eJS.getCode()];
+                eHtml.setCode(self.templates[t][0]);
+                eCss.setCode(self.templates[t][1]);
+                eJS.setCode(self.templates[t][2]);
+                refresh();
+            });
+ 
         }
 
     });
