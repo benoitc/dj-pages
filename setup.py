@@ -65,8 +65,8 @@ setup(
     install_requires = [
         'setuptools',
         'django',
-        'couchdbkit',
-        'dj_revproxy'
+        'couchdbkit>=0.5',
+        'dj_revproxy>=0.2.2'
     ],
     
     test_suite = 'nose.collector',
